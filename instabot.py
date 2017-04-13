@@ -17,7 +17,7 @@ def self_info():
     print(my_info)
     print("Full name of self..."+my_info['data']['full_name'])
     print("code of self...."+str(my_info['meta']['code']))
-self_info()
+#self_info()
 
 
 #info of a particular user by serach method
@@ -83,7 +83,7 @@ def do_comment_on_post(user_name):
     #print (request_url)
     payload = {"access_token": ACCESS_TOKEN,'text':'gud'}
     comment_response = requests.post(request_url, payload).json()
-    print("..........Response of post request on comments .....")
+    print("..........Response of post request on comments and do the comment on user post.....")
     print(comment_response)
     return(comment_response['data']['id'])#comment_id
 
@@ -104,4 +104,21 @@ def delete_post(user_name):
     delete_comment = requests.delete(request_url).json()
     print("........Response of delete request comment...")
     print(delete_comment)
-delete_post("bot_demo")
+#delete_post("bot_demo")
+
+
+
+
+
+print(".....********.......This Is My instabot App....*****.....")
+print("........You can choose one option at a time by pressing 1 to 8 digit....")
+print("....>>### Enter 1 for self information  ###<<......")
+print("....>>### Enter 2 for User information  ###<<......")
+print("....>>### Enter 3 for see user post  ###<<......")
+print("....>>### Enter 4 to do like on user post ###<<......")
+print("....>>### Enter 5 to see the recent comments on post ###<<......")
+print("....>>### Enter 6 to do comment on the instagram user post  ###<<......")
+print("....>>### Enter 7 to delete the particular comment by comment_id  ###<<......")
+
+
+

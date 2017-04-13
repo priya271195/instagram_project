@@ -37,8 +37,9 @@ def see_post_of_user(user_name):
     insta_user_id = get_user_info_by_user_name(user_name)
     print("Id of searched instagram user....."+insta_user_id)
     url = BASE_URL + 'users/' + insta_user_id + '/media/recent/?access_token=' + ACCESS_TOKEN
-    print("The complete information of the instagram user media...."+url)
     recent_post = requests.get(url).json()
+    print("The complete information of the instagram user media...." )
+    print(recent_post)
     print("it is the id of recent post of secarhed user......."+recent_post['data'][0]['id'])
     print("it is the link of a particular post done by user who have serached out ...."+recent_post['data'][0]['link'])
     return recent_post['data'][0]['id']
@@ -111,7 +112,7 @@ def delete_post(user_name):
 
 
 print(".....********.......This Is My instabot App....*****.....")
-print("........You can choose one option at a time by pressing 1 to 8 digit....")
+print("........You can choose one option at a time by pressing 1 to 7 digit....")
 print("....>>### Enter 1 for self information  ###<<......")
 print("....>>### Enter 2 for User information  ###<<......")
 print("....>>### Enter 3 for see user post  ###<<......")
@@ -120,5 +121,23 @@ print("....>>### Enter 5 to see the recent comments on post ###<<......")
 print("....>>### Enter 6 to do comment on the instagram user post  ###<<......")
 print("....>>### Enter 7 to delete the particular comment by comment_id  ###<<......")
 
+
+choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
+if choice=='1':
+    self_info()
+elif choice=='2':
+    get_user_info_by_user_name("bot_demo")
+elif choice=='3':
+    see_post_of_user("bot_demo")
+elif choice=='4':
+    like_post_of_user("bot_demo")
+elif choice=='5':
+    see_comment_on_post("bot_demo")
+elif choice=='6':
+    do_comment_on_post("bot_demo")
+elif choice=='7':
+    delete_post("bot_demo")
+else:
+    print("........wrong choice entered.....thank you.....")
 
 

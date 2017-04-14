@@ -54,12 +54,15 @@ def get_user_info_by_user_name(insta_user_name):
 def get_user_id(user_name):
     main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
     user_info = requests.get(main_url).json()
-    print("Id of user is..........   "+user_info['data'][0]['id'])
-    return user_info['data'][0]['id']  # id of instagram user
+    if user_info['data'][0]['id'] == '':
+        print("...... USER ID IS NOT FOUND....")
+    else:
+        print("Id of user is..........   " + user_info['data'][0]['id'])
+        return user_info['data'][0]['id']  # id of instagram user
 
 # fxn to display complete info of user
 def get_user_complete_info(insta_user_name):
-    insta_user_id = get_user_info_by_user_name(insta_user_name)
+    insta_user_id = get_user_id(insta_user_name)
     print("Id of searched instagram user....." + insta_user_id)
     main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
     user_info = requests.get(main_url).json()
@@ -79,30 +82,48 @@ def get_user_complete_info(insta_user_name):
 
 #to see post of particular user by name
 def see_post_of_user(user_name):
-    insta_user_id = get_user_info_by_user_name(user_name)
+    insta_user_id = get_user_id(user_name)
     url = BASE_URL + 'users/' + insta_user_id + '/media/recent/?access_token=' + ACCESS_TOKEN
     recent_post = requests.get(url).json()
     print("The complete information of the instagram user media...." )
     print(recent_post)
     print("it is the id of recent post of secarhed user......."+recent_post['data'][0]['id'])
-    print("it is the link of a particular post done by user who have serached out ...."+recent_post['data'][0]['link'])
+    print("it is the link of a particular post done by user who have serached out and you are going to like and comment...."+recent_post['data'][0]['link'])
     return recent_post['data'][0]['id']  #recent user post_id
 #see_post_of_user("bot_demo")
 
 
+#this fxn will return post id of user
+def get_post_id(user_name):
+    insta_user_id = get_user_id(user_name)
+    url = BASE_URL + 'users/' + insta_user_id + '/media/recent/?access_token=' + ACCESS_TOKEN
+    recent_post = requests.get(url).json()
+    print("it is the link of a particular post done by user who have serached out and you are going to like and comment...." +recent_post['data'][0]['link'])
+    #print(recent_post)
+    for number in range(0, len(recent_post["data"]), 1):  # traversingh all post id of user
+        pass
+
+
+    print("-------------Total Number Of posts-------- " + str(number))
+    return recent_post['data'][0]['id']  # recent user post_id
 
 
 
 
 #fxn to like the post of a particular user who accepted your sandbox request
 def like_post_of_user(user_name):
-      post_id =see_post_of_user(user_name)
+      post_id =get_post_id(user_name)
       print("post Id oF User is ........."+post_id)
       payload = {"access_token":ACCESS_TOKEN}
       req_url = BASE_URL + "media/" + post_id +"/likes"
       like_response = requests.post(req_url,payload).json()
       print("...........Response of the post request(to do like) on instagram user post....")
       print(like_response)
+      if like_response['meta']['code']==200:
+          print(".....yes you have done succesfully like on the post.....")
+      else:
+          print("Please try again to do like")
+
 #like_post_of_user("bot_demo")
 
 
@@ -110,12 +131,13 @@ def like_post_of_user(user_name):
 
 #fxn to see comment on user post
 def see_comment_on_post(user_name):
-    post_id = see_post_of_user(user_name)
+    post_id = get_post_id(user_name)
     request_url = BASE_URL + 'media/' + post_id + '/comments?access_token='+ACCESS_TOKEN
     #print (request_url)
     comments = requests.get(request_url).json()
     print("Response of get request on comments which display comments on particular media.....")
     print(comments)
+    return comments
 #see_comment_on_post("bot_demo")
 
 
@@ -123,32 +145,51 @@ def see_comment_on_post(user_name):
 
 #fxn to do comment on post
 def do_comment_on_post(user_name):
-    post_id = see_post_of_user(user_name)
-
+    post_id = get_post_id(user_name)
     request_url = BASE_URL + 'media/' + post_id + '/comments?access_token=' + ACCESS_TOKEN
-
+    comment_you_want_todo = input("Please enter the comment you want to do on post_id   "+str(post_id))
     #print (request_url)
-    payload = {"access_token": ACCESS_TOKEN,'text':'gud'}
+    payload = {"access_token": ACCESS_TOKEN,'text':comment_you_want_todo}
     comment_response = requests.post(request_url, payload).json()
     print("..........Response of post request on comments and do the comment on user post.....")
     print(comment_response)
+    if comment_response['meta']['code']==200:
+        print(".... you have done succesfully comment on the post and yous comment is ...  "+comment_you_want_todo)
+    else:
+        print("_________________please try after sometime__________donot need to worry it will work fine_______")
     return(comment_response['data']['id'])#comment_id
 #do_comment_on_post("bot_demo")
 
 
+#serach comment according to particular user to delete that comment
+def return_comment_id(user_name):
+    post_id = get_post_id(user_name)
+    comment = input("______Please enter the comment you want to delete________   ")
+    recent_comments = BASE_URL + "media/" + post_id + "/comments?access_token=" + ACCESS_TOKEN
+    recent_comments = requests.get(recent_comments).json()#get to see the comment
+    for i in range(0, len(recent_comments["data"]), 1): #one by one each
+        if comment in recent_comments['data'][i]['text']:
+            print("______comment is found________")
+            return recent_comments['data'][i]['id']
+        else:
+            print("################### please try again to search out ########")
+
 
 #delete a comment on a post
 def delete_post(user_name):
-    post_id = see_post_of_user(user_name)
+    post_id = get_post_id(user_name)
     print("user's post id is...."+post_id)
-    comment_id = do_comment_on_post(user_name)
-    print("comment id is...."+comment_id)
-
+    comment_id = return_comment_id(user_name)
+    print("comment id is...."+str(comment_id))
     request_url = BASE_URL + 'media/' + post_id + '/comments/'+comment_id + '?access_token='+ACCESS_TOKEN
-    print(request_url)
+    #print(request_url)
     delete_comment = requests.delete(request_url).json()
     print("........Response of delete request comment...")
     print(delete_comment)
+    if delete_comment['meta']['code']==200:
+        print("succesfully deleted your entered comment....")
+    else:
+        print("not succesfully deleted your comment--------------------")
 #delete_post("bot_demo")
 
 
@@ -159,17 +200,16 @@ while count=='y':
 
 
     print(".....********.......This Is My instabot App....*****.....")
-    print("........You can choose one option at a time by pressing 1 to 10 digit....")
+    print("........You can choose one option at a time by pressing 1 to 9 digit....")
     print("....>>### Enter 1 for self information  ###<<......")
     print("....>>### Enter 2 for complete information of owner ###<<......")
     print("....>>### Enter 3 for User information  ###<<......")
     print("....>>### Enter 4 for User complete infomation information  ###<<......")
-    print("....>>### Enter 5 for User to get user id  ###<<......")
-    print("....>>### Enter 6 for see user post  ###<<......")
-    print("....>>### Enter 7 to do like on user post ###<<......")
-    print("....>>### Enter 8 to see the recent comments on post ###<<......")
-    print("....>>### Enter 9 to do comment on the instagram user post  ###<<......")
-    print("....>>### Enter 10 to delete the particular comment by comment_id  ###<<......")
+    print("....>>### Enter 5 for see user post  ###<<......")
+    print("....>>### Enter 6 to do like on user post ###<<......")
+    print("....>>### Enter 7 to see the recent comments on post ###<<......")
+    print("....>>### Enter 8 to do comment on the instagram user post  ###<<......")
+    print("....>>### Enter 9 to delete the particular comment by comment_id  ###<<......")
 
 
     choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
@@ -194,42 +234,36 @@ while count=='y':
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
-    elif choice=='5':
-        insta_user_name = input(".... Please Enter Name oF user you want to see id you have option to enter bot_demo.....    ")
-        if insta_user_name=='bot_demo':
-            get_user_id(insta_user_name)
-        else:
-            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
-    elif choice=='6':
+    elif choice=='5':
         insta_user_name = input(".... Please Enter Name oF user whose post you want to see you have option to enter bot_demo.....     ")
         if insta_user_name == 'bot_demo':
             see_post_of_user(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
-    elif choice=='7':
+    elif choice=='6':
         insta_user_name = input(".... Please Enter Name oF user whom post yoy want to like you have option to enter bot_demo.....   ")
         if insta_user_name == 'bot_demo':
             like_post_of_user(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
-    elif choice=='8':
+    elif choice=='7':
         insta_user_name = input(".... Please Enter Name oF user to see the comment on his post you have option to enter bot_demo.....     ")
         if insta_user_name == 'bot_demo':
             see_comment_on_post(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
-    elif choice=='9':
+    elif choice=='8':
         insta_user_name = input(".... Please Enter Name oF user on which you want to comment you have option to enter bot_demo.....     ")
         if insta_user_name == 'bot_demo':
             do_comment_on_post(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
-    elif choice=='10':
+    elif choice=='9':
         insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
         if insta_user_name == 'bot_demo':
             delete_post(insta_user_name)

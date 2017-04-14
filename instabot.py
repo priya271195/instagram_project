@@ -15,9 +15,22 @@ def self_info():
     #print(main_url)
     print("....info about user who generted access token.....")
     print(my_info)
-    print("Full name of self..."+my_info['data']['full_name'])
-    print("code of self...."+str(my_info['meta']['code']))
 #self_info()
+
+
+def complete_info_of_self():
+    main_url = BASE_URL + 'users/self/?access_token=' + ACCESS_TOKEN
+    my_info = requests.get(main_url).json()
+    print(".............** Here Is the complete detail of owner **.....")
+    print("Name of owner.... "+my_info['data']['full_name'])
+    print("username of owner.... " + my_info['data']['username'])
+    print("id of owner.... " + my_info['data']['id'])
+    print("profile picture of owner.... " + my_info['data']['profile_picture'])
+    print("Total media of owner.... " + str(my_info['data']['counts']['media']))
+    print("Follwers of owner.... " + str(my_info['data']['counts']['followed_by']))
+    print("following of owner.... " + str(my_info['data']['counts']['follows']))
+    print("website of owner.... " + my_info['data']['website'])
+#complete_info_of_self()
 
 
 #info of a particular user by serach method
@@ -110,30 +123,33 @@ def delete_post(user_name):
 
 
 print(".....********.......This Is My instabot App....*****.....")
-print("........You can choose one option at a time by pressing 1 to 7 digit....")
+print("........You can choose one option at a time by pressing 1 to 8 digit....")
 print("....>>### Enter 1 for self information  ###<<......")
-print("....>>### Enter 2 for User information  ###<<......")
-print("....>>### Enter 3 for see user post  ###<<......")
-print("....>>### Enter 4 to do like on user post ###<<......")
-print("....>>### Enter 5 to see the recent comments on post ###<<......")
-print("....>>### Enter 6 to do comment on the instagram user post  ###<<......")
-print("....>>### Enter 7 to delete the particular comment by comment_id  ###<<......")
+print("....>>### Enter 2 for complete information of owner ###<<......")
+print("....>>### Enter 3 for User information  ###<<......")
+print("....>>### Enter 4 for see user post  ###<<......")
+print("....>>### Enter 5 to do like on user post ###<<......")
+print("....>>### Enter 6 to see the recent comments on post ###<<......")
+print("....>>### Enter 7 to do comment on the instagram user post  ###<<......")
+print("....>>### Enter 8 to delete the particular comment by comment_id  ###<<......")
 
 
 choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
 if choice=='1':
     self_info()
 elif choice=='2':
-    get_user_info_by_user_name("bot_demo")
+    complete_info_of_self()
 elif choice=='3':
-    see_post_of_user("bot_demo")
+    get_user_info_by_user_name("bot_demo")
 elif choice=='4':
-    like_post_of_user("bot_demo")
+    see_post_of_user("bot_demo")
 elif choice=='5':
-    see_comment_on_post("bot_demo")
+    like_post_of_user("bot_demo")
 elif choice=='6':
-    do_comment_on_post("bot_demo")
+    see_comment_on_post("bot_demo")
 elif choice=='7':
+    do_comment_on_post("bot_demo")
+elif choice=='8':
     delete_post("bot_demo")
 else:
     print("........wrong choice entered.....thank you.....")

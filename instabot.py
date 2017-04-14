@@ -24,9 +24,9 @@ def self_info():
 def get_user_info_by_user_name(insta_user_name):
     main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
     user_info = requests.get(main_url).json()
-    print(".....hence info of searched user is.......")
+    print(".....hence information of searched user is.......")
     print(user_info)
-    return user_info['data'][0]['id']
+    return user_info['data'][0]['id'] #id of instagram user
 #get_user_info_by_user_name("bot_demo")
 
 
@@ -42,7 +42,7 @@ def see_post_of_user(user_name):
     print(recent_post)
     print("it is the id of recent post of secarhed user......."+recent_post['data'][0]['id'])
     print("it is the link of a particular post done by user who have serached out ...."+recent_post['data'][0]['link'])
-    return recent_post['data'][0]['id']
+    return recent_post['data'][0]['id']  #recent user post_id
 #see_post_of_user("bot_demo")
 
 
@@ -55,7 +55,7 @@ def like_post_of_user(user_name):
       payload = {"access_token":ACCESS_TOKEN}
       req_url = BASE_URL + "media/" + post_id +"/likes"
       like_response = requests.post(req_url,payload).json()
-      print("...........Response of the like post on instagram user....")
+      print("...........Response of the post request(to do like) on instagram user post....")
       print(like_response)
 #like_post_of_user("bot_demo")
 
@@ -87,12 +87,10 @@ def do_comment_on_post(user_name):
     print("..........Response of post request on comments and do the comment on user post.....")
     print(comment_response)
     return(comment_response['data']['id'])#comment_id
-
-
 #do_comment_on_post("bot_demo")
 
 
-#https://api.instagram.com/v1/media/{media-id}/comments/{comment-id}?access_token=A
+
 #delete a comment on a post
 def delete_post(user_name):
     post_id = see_post_of_user(user_name)

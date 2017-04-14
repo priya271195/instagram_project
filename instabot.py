@@ -201,14 +201,14 @@ def average_number_in_comment(post_id):
     words_count = 0
     url = BASE_URL + "media/" + str(post_id) + "/comments/?access_token=" + ACCESS_TOKEN
     comment_data = requests.get(url).json()
-    comments_list = []
+    comments_list = [] #empty list
     if len(comment_data['data']) != 0:
         for comment in comment_data['data']:
-            comments_list.append(comment['text'])
-            length_of_word_in_list = len(comment['text'].split())
+            comments_list.append(comment['text'])#appending each word
+            length_of_word_in_list = len(comment['text'].split())#count the length by ignoring space
             words_count = words_count + length_of_word_in_list
-        average = float(words_count)/len(comments_list)
-        print("--------------------hence average is---------%.2f   "%(words_count))
+        average = float(words_count)/len(comments_list)#calculatin avg
+        print("--------------------hence average is---------%.2f   "%(average))
     else:
         print("__________________There is no comment on this selected post_____")
 

@@ -137,20 +137,52 @@ print("....>>### Enter 8 to delete the particular comment by comment_id  ###<<..
 choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
 if choice=='1':
     self_info()
+
 elif choice=='2':
     complete_info_of_self()
+
 elif choice=='3':
-    get_user_info_by_user_name("bot_demo")
+    insta_user_name = input(".... Please Enter Name oF user you want to search detail you have option to enter bot_demo.....    ")
+    if insta_user_name=='bot_demo':
+        get_user_info_by_user_name(insta_user_name)
+    else:
+        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 elif choice=='4':
-    see_post_of_user("bot_demo")
+    insta_user_name = input(".... Please Enter Name oF user whose post you want to see you have option to enter bot_demo.....     ")
+    if insta_user_name == 'bot_demo':
+        see_post_of_user(insta_user_name)
+    else:
+        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 elif choice=='5':
-    like_post_of_user("bot_demo")
+    insta_user_name = input(".... Please Enter Name oF user whom post yoy want to like you have option to enter bot_demo.....   ")
+    if insta_user_name == 'bot_demo':
+        like_post_of_user(insta_user_name)
+    else:
+        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 elif choice=='6':
-    see_comment_on_post("bot_demo")
+    insta_user_name = input(".... Please Enter Name oF user to see the comment on his post you have option to enter bot_demo.....     ")
+    if insta_user_name == 'bot_demo':
+        see_comment_on_post(insta_user_name)
+    else:
+        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 elif choice=='7':
-    do_comment_on_post("bot_demo")
+    insta_user_name = input(".... Please Enter Name oF user on which you want to comment you have option to enter bot_demo.....     ")
+    if insta_user_name == 'bot_demo':
+        do_comment_on_post(insta_user_name)
+    else:
+        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 elif choice=='8':
-    delete_post("bot_demo")
+    insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+    if insta_user_name == 'bot_demo':
+        delete_post(insta_user_name)
+    else:
+        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 else:
     print("........wrong choice entered.....thank you.....")
 

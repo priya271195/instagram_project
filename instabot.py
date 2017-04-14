@@ -162,8 +162,8 @@ def do_comment_on_post(user_name):
 
 
 #serach comment according to particular user to delete that comment
-def return_comment_id(user_name):
-    post_id = get_post_id(user_name)
+def return_comment_id(user_name,post_id):
+
     comment = input("______Please enter the comment you want to delete________   ")
     recent_comments = BASE_URL + "media/" + post_id + "/comments?access_token=" + ACCESS_TOKEN
     recent_comments = requests.get(recent_comments).json()#get to see the comment
@@ -175,11 +175,14 @@ def return_comment_id(user_name):
             print("################### please try again to search out ########")
 
 
+
+
+
 #delete a comment on a post
 def delete_post(user_name):
     post_id = get_post_id(user_name)
     print("user's post id is...."+post_id)
-    comment_id = return_comment_id(user_name)
+    comment_id = return_comment_id(user_name,post_id)
     print("comment id is...."+str(comment_id))
     request_url = BASE_URL + 'media/' + post_id + '/comments/'+comment_id + '?access_token='+ACCESS_TOKEN
     #print(request_url)
@@ -193,6 +196,27 @@ def delete_post(user_name):
 #delete_post("bot_demo")
 
 
+#average fxn
+def average_number_in_comment(post_id):
+    words_count = 0
+    url = BASE_URL + "media/" + str(post_id) + "/comments/?access_token=" + ACCESS_TOKEN
+    comment_data = requests.get(url).json()
+    comments_list = []
+    if len(comment_data['data']) != 0:
+        for comment in comment_data['data']:
+            comments_list.append(comment['text'])
+            length_of_word_in_list = len(comment['text'].split())
+            words_count = words_count + length_of_word_in_list
+        average = float(words_count)/len(comments_list)
+        print("--------------------hence average is---------%.2f   "%(words_count))
+    else:
+        print("__________________There is no comment on this selected post_____")
+
+
+
+
+
+
 
 #to enter in the while loop to repeat this task again and again
 count = 'y'
@@ -200,7 +224,7 @@ while count=='y':
 
 
     print(".....********.......This Is My instabot App....*****.....")
-    print("........You can choose one option at a time by pressing 1 to 9 digit....")
+    print("........You can choose one option at a time by pressing 1 to 10 digit....")
     print("....>>### Enter 1 for self information  ###<<......")
     print("....>>### Enter 2 for complete information of owner ###<<......")
     print("....>>### Enter 3 for User information  ###<<......")
@@ -210,6 +234,7 @@ while count=='y':
     print("....>>### Enter 7 to see the recent comments on post ###<<......")
     print("....>>### Enter 8 to do comment on the instagram user post  ###<<......")
     print("....>>### Enter 9 to delete the particular comment by comment_id  ###<<......")
+    print("....>>### Enter 10 to print the average number of words per comment  ###<<......")
 
 
     choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
@@ -267,6 +292,15 @@ while count=='y':
         insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
         if insta_user_name == 'bot_demo':
             delete_post(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice == '10':
+        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+        if insta_user_name == 'bot_demo':
+
+            post_id = get_post_id(insta_user_name)
+            average_number_in_comment(post_id)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 

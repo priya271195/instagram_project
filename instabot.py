@@ -29,7 +29,14 @@ def complete_info_of_self():
     print("Total media of owner.... " + str(my_info['data']['counts']['media']))
     print("Follwers of owner.... " + str(my_info['data']['counts']['followed_by']))
     print("following of owner.... " + str(my_info['data']['counts']['follows']))
-    print("website of owner.... " + my_info['data']['website'])
+    if my_info['data']['website']!='':
+        print("........website of the owner....   " + my_info['data']['website'])
+    else:
+        print("........website of the owner....   " + "No site of owner")
+    if my_info['data']['bio']!='':
+        print("........bio of the owner....   " + my_info['data']['bio'])
+    else:
+        print("........bio of the owner....   " + "No bio of owner")
 #complete_info_of_self()
 
 
@@ -43,6 +50,31 @@ def get_user_info_by_user_name(insta_user_name):
 #get_user_info_by_user_name("bot_demo")
 
 
+#get user_id
+def get_user_id(user_name):
+    main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
+    user_info = requests.get(main_url).json()
+    print("Id of user is..........   "+user_info['data'][0]['id'])
+    return user_info['data'][0]['id']  # id of instagram user
+
+# fxn to display complete info of user
+def get_user_complete_info(insta_user_name):
+    insta_user_id = get_user_info_by_user_name(insta_user_name)
+    print("Id of searched instagram user....." + insta_user_id)
+    main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
+    user_info = requests.get(main_url).json()
+    #print(user_info)
+    print("........Name of the user....   "+user_info['data'][0]['username'])
+    print("........Profile picture of the user....   " + user_info['data'][0]['profile_picture'])
+    print("........full_name of the user....   " + user_info['data'][0]['full_name'])
+    if user_info['data'][0]['website']!='':
+        print("........website of the user....   " + user_info['data'][0]['website'])
+    else:
+        print("........website of the user....   " + "No site of this particular user")
+    if user_info['data'][0]['bio']!='':
+        print("........bio of the user....   " + user_info['data'][0]['bio'])
+    else:
+        print("........bio of the user....   " + "No bio of this particular user")
 
 
 #to see post of particular user by name
@@ -58,15 +90,7 @@ def see_post_of_user(user_name):
 #see_post_of_user("bot_demo")
 
 
-# fxn to display complete info of user
-def get_user_complete_info(insta_user_name):
-    insta_user_id = get_user_info_by_user_name(insta_user_name)
-    print("Id of searched instagram user....." + insta_user_id)
-    url = BASE_URL + 'users/' + insta_user_id + '/media/recent/?access_token=' + ACCESS_TOKEN
-    user_info = requests.get(url).json()
-    print("...name of the user.....  " + user_info['data']['username'])
-    print("...profile of the user.....  " + user_info['data']['profile_picture'])
-    print("...website of the user.....  " + user_info['data']['website'])
+
 
 
 
@@ -129,81 +153,92 @@ def delete_post(user_name):
 
 
 
+#to enter in the while loop to repeat this task again and again
+count = 'y'
+while count=='y':
 
 
-print(".....********.......This Is My instabot App....*****.....")
-print("........You can choose one option at a time by pressing 1 to 9 digit....")
-print("....>>### Enter 1 for self information  ###<<......")
-print("....>>### Enter 2 for complete information of owner ###<<......")
-print("....>>### Enter 3 for User information  ###<<......")
-print("....>>### Enter 4 for User complete infomation information  ###<<......")
-print("....>>### Enter 5 for see user post  ###<<......")
-print("....>>### Enter 6 to do like on user post ###<<......")
-print("....>>### Enter 7 to see the recent comments on post ###<<......")
-print("....>>### Enter 8 to do comment on the instagram user post  ###<<......")
-print("....>>### Enter 9 to delete the particular comment by comment_id  ###<<......")
+    print(".....********.......This Is My instabot App....*****.....")
+    print("........You can choose one option at a time by pressing 1 to 10 digit....")
+    print("....>>### Enter 1 for self information  ###<<......")
+    print("....>>### Enter 2 for complete information of owner ###<<......")
+    print("....>>### Enter 3 for User information  ###<<......")
+    print("....>>### Enter 4 for User complete infomation information  ###<<......")
+    print("....>>### Enter 5 for User to get user id  ###<<......")
+    print("....>>### Enter 6 for see user post  ###<<......")
+    print("....>>### Enter 7 to do like on user post ###<<......")
+    print("....>>### Enter 8 to see the recent comments on post ###<<......")
+    print("....>>### Enter 9 to do comment on the instagram user post  ###<<......")
+    print("....>>### Enter 10 to delete the particular comment by comment_id  ###<<......")
 
 
-choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
-if choice=='1':
-    self_info()
+    choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
+    if choice=='1':
+        self_info()
 
-elif choice=='2':
-    complete_info_of_self()
+    elif choice=='2':
+        complete_info_of_self()
 
-elif choice=='3':
-    insta_user_name = input(".... Please Enter Name oF user you want to search detail you have option to enter bot_demo.....    ")
-    if insta_user_name=='bot_demo':
-        get_user_info_by_user_name(insta_user_name)
+    elif choice=='3':
+        insta_user_name = input(".... Please Enter Name oF user you want to search detail you have option to enter bot_demo.....    ")
+        if insta_user_name=='bot_demo':
+            get_user_info_by_user_name(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+
+    elif choice=='4':
+        insta_user_name = input(".... Please Enter Name oF user you want to see complete detail you have option to enter bot_demo.....    ")
+        if insta_user_name=='bot_demo':
+            get_user_complete_info(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='5':
+        insta_user_name = input(".... Please Enter Name oF user you want to see id you have option to enter bot_demo.....    ")
+        if insta_user_name=='bot_demo':
+            get_user_id(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='6':
+        insta_user_name = input(".... Please Enter Name oF user whose post you want to see you have option to enter bot_demo.....     ")
+        if insta_user_name == 'bot_demo':
+            see_post_of_user(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='7':
+        insta_user_name = input(".... Please Enter Name oF user whom post yoy want to like you have option to enter bot_demo.....   ")
+        if insta_user_name == 'bot_demo':
+            like_post_of_user(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='8':
+        insta_user_name = input(".... Please Enter Name oF user to see the comment on his post you have option to enter bot_demo.....     ")
+        if insta_user_name == 'bot_demo':
+            see_comment_on_post(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='9':
+        insta_user_name = input(".... Please Enter Name oF user on which you want to comment you have option to enter bot_demo.....     ")
+        if insta_user_name == 'bot_demo':
+            do_comment_on_post(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='10':
+        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+        if insta_user_name == 'bot_demo':
+            delete_post(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
     else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+        print("........wrong choice entered.....thank you.....")
 
-
-elif choice=='4':
-    insta_user_name = input(".... Please Enter Name oF user you want to see complete detail you have option to enter bot_demo.....    ")
-    if insta_user_name=='bot_demo':
-        get_user_complete_info(insta_user_name)
-    else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
-
-
-
-elif choice=='5':
-    insta_user_name = input(".... Please Enter Name oF user whose post you want to see you have option to enter bot_demo.....     ")
-    if insta_user_name == 'bot_demo':
-        see_post_of_user(insta_user_name)
-    else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
-
-elif choice=='6':
-    insta_user_name = input(".... Please Enter Name oF user whom post yoy want to like you have option to enter bot_demo.....   ")
-    if insta_user_name == 'bot_demo':
-        like_post_of_user(insta_user_name)
-    else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
-
-elif choice=='7':
-    insta_user_name = input(".... Please Enter Name oF user to see the comment on his post you have option to enter bot_demo.....     ")
-    if insta_user_name == 'bot_demo':
-        see_comment_on_post(insta_user_name)
-    else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
-
-elif choice=='8':
-    insta_user_name = input(".... Please Enter Name oF user on which you want to comment you have option to enter bot_demo.....     ")
-    if insta_user_name == 'bot_demo':
-        do_comment_on_post(insta_user_name)
-    else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
-
-elif choice=='9':
-    insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
-    if insta_user_name == 'bot_demo':
-        delete_post(insta_user_name)
-    else:
-        print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
-
-else:
-    print("........wrong choice entered.....thank you.....")
-
-
+    print("*************.........Do You want to use this app again........***********")
+    count = input("... #####  Enter 'y' if you want to use this app again #### .....")
+print("..... Hope you use this app in mannerful way.... Thanx.... :) ")

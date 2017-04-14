@@ -8,6 +8,8 @@ print("...**/\............My Access token of the app is........./\**......"+ACCE
 BASE_URL = 'https://api.instagram.com/v1/'
 
 
+
+#_________________________________________________________________________________________________________
 #owner info function who generated acess token
 def self_info():
     main_url = BASE_URL + 'users/self/?access_token=' + ACCESS_TOKEN
@@ -17,6 +19,8 @@ def self_info():
     print(my_info)
 #self_info()
 
+
+#--------------------------------------------------------------------------------------------------------
 #complete infomation of owner
 def complete_info_of_self():
     main_url = BASE_URL + 'users/self/?access_token=' + ACCESS_TOKEN
@@ -39,7 +43,7 @@ def complete_info_of_self():
         print("........bio of the owner....   " + "No bio of owner")
 #complete_info_of_self()
 
-
+#***************************************************************************************************************************
 #info of a particular user by serach method
 def get_user_info_by_user_name(insta_user_name):
     main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
@@ -50,6 +54,7 @@ def get_user_info_by_user_name(insta_user_name):
 #get_user_info_by_user_name("bot_demo")
 
 
+###########################################################################################################################
 #get user_id
 def get_user_id(user_name):
     main_url = BASE_URL + 'users/search?q=' + insta_user_name + '&access_token=' + ACCESS_TOKEN
@@ -60,6 +65,9 @@ def get_user_id(user_name):
         print("Id of user is..........   " + user_info['data'][0]['id'])
         return user_info['data'][0]['id']  # id of instagram user
 
+
+
+#&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7
 # fxn to display complete info of user
 def get_user_complete_info(insta_user_name):
     insta_user_id = get_user_id(insta_user_name)
@@ -80,6 +88,8 @@ def get_user_complete_info(insta_user_name):
         print("........bio of the user....   " + "No bio of this particular user")
 
 
+
+#______________________________________________________________________________________________________________________________
 #to see post of particular user by name
 def see_post_of_user(user_name):
     insta_user_id = get_user_id(user_name)
@@ -93,6 +103,7 @@ def see_post_of_user(user_name):
 #see_post_of_user("bot_demo")
 
 
+#_________________________________________________________________________________________________________________________________
 #this fxn will return post id of user
 def get_post_id(user_name):
     insta_user_id = get_user_id(user_name)
@@ -109,7 +120,7 @@ def get_post_id(user_name):
 
 
 
-
+###############################################################################################################################
 #fxn to like the post of a particular user who accepted your sandbox request
 def like_post_of_user(user_name):
       post_id =get_post_id(user_name)
@@ -128,7 +139,7 @@ def like_post_of_user(user_name):
 
 
 
-
+#---------------------------------------------------------------------------------------------------------------------------
 #fxn to see comment on user post
 def see_comment_on_post(user_name):
     post_id = get_post_id(user_name)
@@ -142,12 +153,12 @@ def see_comment_on_post(user_name):
 
 
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #fxn to do comment on post
 def do_comment_on_post(user_name):
     post_id = get_post_id(user_name)
     request_url = BASE_URL + 'media/' + post_id + '/comments?access_token=' + ACCESS_TOKEN
-    comment_you_want_todo = input("Please enter the comment you want to do on post_id   "+str(post_id))
+    comment_you_want_todo = input("Please enter the comment you want to do on post_id   "+str(post_id)+"   ")
     #print (request_url)
     payload = {"access_token": ACCESS_TOKEN,'text':comment_you_want_todo}
     comment_response = requests.post(request_url, payload).json()
@@ -161,6 +172,7 @@ def do_comment_on_post(user_name):
 #do_comment_on_post("bot_demo")
 
 
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 #serach comment according to particular user to delete that comment
 def return_comment_id(user_name,post_id):
 
@@ -177,9 +189,9 @@ def return_comment_id(user_name,post_id):
 
 
 
-
+#----------------------------------------------------------------------------------------------------------------------
 #delete a comment on a post
-def delete_post(user_name):
+def delete_post_bycomment(user_name):
     post_id = get_post_id(user_name)
     print("user's post id is...."+post_id)
     comment_id = return_comment_id(user_name,post_id)
@@ -196,6 +208,8 @@ def delete_post(user_name):
 #delete_post("bot_demo")
 
 
+
+###########################################################################################################################
 #average fxn
 def average_number_in_comment(post_id):
     words_count = 0
@@ -213,10 +227,35 @@ def average_number_in_comment(post_id):
         print("__________________There is no comment on this selected post_____")
 
 
+#_____________________________________________________________________________________________________________________
+#secrh comment by word to delete that
+def delete_comment_by_word(insta_user):
+    comment_list = []
+    post_id = get_post_id(insta_user)
+    word_want_to_search = input("_________________Please enter the word you want to search_______________________________")
+    request_url = BASE_URL + 'media/' + post_id + '/comments?access_token=' + ACCESS_TOKEN
+    # print (request_url)
+    comments = requests.get(request_url).json()
+    comments_result = comments['data']
 
 
+    for i in range(len(comments_result)): # accessing the ecah word in text
+        single_word = comments_result[i]['text'].split()
+
+        if word_want_to_search in single_word:
+            comment_list.append(comments_result[i]['id'])
+    if len(comment_list):
+        for i in comment_list:
+            request_url = BASE_URL + 'media/' + post_id + '/comments/' + str(i) + '?access_token=' + ACCESS_TOKEN
+            # print(request_url)
+            delete_comment = requests.delete(request_url).json()
+        print("________________comment is deleted succesfully______________")
+    else:
+        print("_____________comment is not found__________")
 
 
+#---------------------------------------------------------------------------------------------------------------------
+#_____________________________________________________________________________________________________________________
 
 #to enter in the while loop to repeat this task again and again
 count = 'y'
@@ -224,7 +263,7 @@ while count=='y':
 
 
     print(".....********.......This Is My instabot App....*****.....")
-    print("........You can choose one option at a time by pressing 1 to 10 digit....")
+    print("........You can choose one option at a time by pressing 1 to 11 digit....")
     print("....>>### Enter 1 for self information  ###<<......")
     print("....>>### Enter 2 for complete information of owner ###<<......")
     print("....>>### Enter 3 for User information  ###<<......")
@@ -235,9 +274,9 @@ while count=='y':
     print("....>>### Enter 8 to do comment on the instagram user post  ###<<......")
     print("....>>### Enter 9 to delete the particular comment by comment_id  ###<<......")
     print("....>>### Enter 10 to print the average number of words per comment  ###<<......")
+    print("....>>### Enter 11 to delete the comment by word  ###<<......")
 
-
-    choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 8)....*******...   ")
+    choice = input("*******.......PLEASE ENTER A RELEVANT CHOICE FROM(1 TO 11)....*******...   ")
     if choice=='1':
         self_info()
 
@@ -291,7 +330,7 @@ while count=='y':
     elif choice=='9':
         insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
         if insta_user_name == 'bot_demo':
-            delete_post(insta_user_name)
+            delete_post_bycomment(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
@@ -303,6 +342,14 @@ while count=='y':
             average_number_in_comment(post_id)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
+    elif choice=='11':
+        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+        if insta_user_name == 'bot_demo':
+            delete_comment_by_word(insta_user_name)
+        else:
+            print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
+
 
     else:
         print("........wrong choice entered.....thank you.....")

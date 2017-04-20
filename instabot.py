@@ -177,14 +177,12 @@ def do_comment_on_post(user_name):
 def return_comment_id(user_name,post_id):
 
     comment = input("______Please enter the comment you want to delete________   ")
-    recent_comments = BASE_URL + "media/" + post_id + "/comments?access_token=" + ACCESS_TOKEN
+    recent_comments = BASE_URL + "media/" + str(post_id) + "/comments?access_token=" + ACCESS_TOKEN
     recent_comments = requests.get(recent_comments).json()#get to see the comment
     for i in range(0, len(recent_comments["data"]), 1): #one by one each
         if comment in recent_comments['data'][i]['text']:
             print("______comment is found________")
             return recent_comments['data'][i]['id']
-        else:
-            print("################### please try again to search out ########")
 
 
 
@@ -195,16 +193,19 @@ def delete_post_bycomment(user_name):
     post_id = get_post_id(user_name)
     print("user's post id is...."+post_id)
     comment_id = return_comment_id(user_name,post_id)
-    print("comment id is...."+str(comment_id))
-    request_url = BASE_URL + 'media/' + post_id + '/comments/'+comment_id + '?access_token='+ACCESS_TOKEN
-    #print(request_url)
-    delete_comment = requests.delete(request_url).json()
-    print("........Response of delete request comment...")
-    print(delete_comment)
-    if delete_comment['meta']['code']==200:
-        print("succesfully deleted your entered comment....")
+    if comment_id==None:
+        print("============your comment is not found==========================")
     else:
-        print("not succesfully deleted your comment--------------------")
+        print("comment id is...."+str(comment_id))
+        request_url = BASE_URL + 'media/' + str(post_id) + '/comments/'+str(comment_id) + '?access_token='+ACCESS_TOKEN
+        #print(request_url)
+        delete_comment = requests.delete(request_url).json()
+        print("........Response of delete request comment...")
+        print(delete_comment)
+        if delete_comment['meta']['code']==200:
+            print("succesfully deleted your entered comment....")
+        else:
+            print("not succesfully deleted your comment--------------------")
 #delete_post("bot_demo")
 
 
@@ -284,68 +285,87 @@ while count=='y':
         complete_info_of_self()
 
     elif choice=='3':
-        insta_user_name = input(".... Please Enter Name oF user you want to search detail you have option to enter bot_demo.....    ")
+        insta_user_name = input(".... Please Enter Name oF user you want to search detail you have option to enter bot_demo and gnimullana.....    ")
         if insta_user_name=='bot_demo':
+            get_user_info_by_user_name(insta_user_name)
+        elif insta_user_name=='gnimullana':
             get_user_info_by_user_name(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
 
     elif choice=='4':
-        insta_user_name = input(".... Please Enter Name oF user you want to see complete detail you have option to enter bot_demo.....    ")
+        insta_user_name = input(".... Please Enter Name oF user you want to see complete detail you have option to enter bot_demo and gnimullana.....    ")
         if insta_user_name=='bot_demo':
+            get_user_complete_info(insta_user_name)
+        elif insta_user_name=='gnimullana':
             get_user_complete_info(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
 
     elif choice=='5':
-        insta_user_name = input(".... Please Enter Name oF user whose post you want to see you have option to enter bot_demo.....     ")
+        insta_user_name = input(".... Please Enter Name oF user whose post you want to see you have option to enter bot_demo and gnimullana.....     ")
         if insta_user_name == 'bot_demo':
+            see_post_of_user(insta_user_name)
+        elif insta_user_name=='gnimullana':
             see_post_of_user(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
     elif choice=='6':
-        insta_user_name = input(".... Please Enter Name oF user whom post yoy want to like you have option to enter bot_demo.....   ")
+        insta_user_name = input(".... Please Enter Name oF user whom post yoy want to like you have option to enter bot_demo and gnimullana.....   ")
         if insta_user_name == 'bot_demo':
+            like_post_of_user(insta_user_name)
+        elif insta_user_name=='gnimullana':
             like_post_of_user(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
     elif choice=='7':
-        insta_user_name = input(".... Please Enter Name oF user to see the comment on his post you have option to enter bot_demo.....     ")
+        insta_user_name = input(".... Please Enter Name oF user to see the comment on his post you have option to enter bot_demo and gnimullana.....     ")
         if insta_user_name == 'bot_demo':
+            see_comment_on_post(insta_user_name)
+        elif insta_user_name=='gnimullana':
             see_comment_on_post(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
     elif choice=='8':
-        insta_user_name = input(".... Please Enter Name oF user on which you want to comment you have option to enter bot_demo.....     ")
+        insta_user_name = input(".... Please Enter Name oF user on which you want to comment you have option to enter bot_demo and gnimullana.....     ")
         if insta_user_name == 'bot_demo':
+            do_comment_on_post(insta_user_name)
+        elif insta_user_name=='gnimullana':
             do_comment_on_post(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
     elif choice=='9':
-        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo and gnimullana.....     ")
         if insta_user_name == 'bot_demo':
+            delete_post_bycomment(insta_user_name)
+        elif insta_user_name=='gnimullana':
             delete_post_bycomment(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
     elif choice == '10':
-        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo and gnimullana.....     ")
         if insta_user_name == 'bot_demo':
 
+            post_id = get_post_id(insta_user_name)
+            average_number_in_comment(post_id)
+        elif insta_user_name=='gnimullana':
             post_id = get_post_id(insta_user_name)
             average_number_in_comment(post_id)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
 
     elif choice=='11':
-        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo.....     ")
+        insta_user_name = input(".... Please Enter Name oF user whom you want to delete comment you have option to enter bot_demo and gnimullana.....     ")
         if insta_user_name == 'bot_demo':
+            delete_comment_by_word(insta_user_name)
+        elif insta_user_name=='gnimullana':
             delete_comment_by_word(insta_user_name)
         else:
             print("...... PLEASE ENTER A VALID NAME FROM OPTION PROVIDED TO YOU.....")
